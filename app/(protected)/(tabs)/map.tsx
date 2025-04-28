@@ -1,76 +1,63 @@
-import MapView, { Marker, PROVIDER_GOOGLE, UrlTile } from "react-native-maps";
-import { View, StyleSheet } from "react-native";
-import { useTheme } from "@/src/contexts/ThemeContext";
+import React from "react";
+import { StyleSheet, View, Image } from "react-native";
+import MapLibreRN, {
+  Camera,
+  MapView,
+  MarkerView,
+} from "@maplibre/maplibre-react-native";
 
-function MapScreen() {
-  const { colorScheme } = useTheme();
-  const isDark = colorScheme === "dark";
+const initialCenterCoordinate = [-98.2376, 19.3154];
+const initialZoomLevel = 10;
 
-  const initialRegion = {
-    latitude: 19.4326,
-    longitude: -99.1332,
-    latitudeDelta: 5,
-    longitudeDelta: 5,
-  };
+function Maplibre() {
+  const MAPTILER_API_KEY = process.env.EXPO_PUBLIC_MAPTILER_API_KEY;
 
-  const reports = [
-    {
-      id: 1,
-      latitude: 19.45,
-      longitude: -99.15,
-      title: "Semáforo descompuesto",
-    },
-    { id: 2, latitude: 19.4, longitude: -99.1, title: "Bache peligroso" },
-  ];
-
+  const vectorStyleURL = `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_API_KEY}`;
   return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={initialRegion}
-        zoomEnabled={true}
-        zoomControlEnabled={true}
-      >
-        <UrlTile
-          urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          maximumZ={19}
-          zIndex={1}
-        />
+    <MapView
+      mapStyle={vectorStyleURL}
+      style={styles.map}
+      logoEnabled={false}
+      attributionEnabled={true}
+      attributionPosition={{ bottom: 8, right: 8 }}
+    >
+      <Camera
+        zoomLevel={initialZoomLevel}
+        centerCoordinate={initialCenterCoordinate}
+        animationMode={"flyTo"}
+        animationDuration={1500}
+      />
 
-        {reports.map((report) => (
-          <Marker
-            key={report.id}
-            coordinate={{
-              latitude: report.latitude,
-              longitude: report.longitude,
-            }}
-            title={report.title}
-            onPress={() => {
-              console.log("Marcador presionado:", report.title);
-            }}
-          />
-        ))}
-      </MapView>
-    </View>
+      {/* {locations.map((location) => (
+        <MarkerView
+          key={location.id}
+          coordinate={location.coords}
+          anchor={{ x: 0.5, y: 1 }}
+        >
+          <View style={styles.markerContainer}>
+            <Image
+              source={require("../../../assets/images/favicon.png")}
+              style={styles.markerIcon}
+            />
+          </View>
+        </MarkerView>
+      ))} */}
+    </MapView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    position: "relative",
-  },
   map: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: "100%",
-    height: "100%",
+    flex: 1,
+  },
+  markerContainer: {
+    alignItems: "center",
+  },
+  markerIcon: {
+    width: 30,
+    height: 40,
+    resizeMode: "contain",
   },
 });
 
-export default MapScreen;
+export default Maplibre;
