@@ -14,7 +14,7 @@ export const PostCardGallery = ({
   const scrollViewRef = useRef<ScrollView>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<{ [key: number]: boolean }>(
-    {}
+    {},
   );
   const BASE_URL = process.env.EXPO_PUBLIC_URL_POST;
 
