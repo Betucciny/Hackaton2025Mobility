@@ -106,36 +106,37 @@ function TabsLayoutContent() {
                     {title}
                   </Text>
                   {/* Icono de perfil solo en la pantalla 'index' */}
-                  {route.name === "index" && (
-                    <View>
-                      {isLoading ? (
-                        <ActivityIndicator size="small" color={"#3b82f6"} />
-                      ) : profile?.avatar_url ? (
-                        <Pressable onPress={handleProfilePress}>
-                          <Image
-                            source={{ uri: profile.avatar_url }}
-                            style={styles.profileImage}
-                            contentFit="cover"
+
+                  <View>
+                    {isLoading ? (
+                      <ActivityIndicator size="small" color={"#3b82f6"} />
+                    ) : profile?.avatar_url ? (
+                      <Pressable onPress={handleProfilePress}>
+                        <Image
+                          source={{ uri: profile.avatar_url }}
+                          style={styles.profileImage}
+                          contentFit="cover"
+                        />
+                      </Pressable>
+                    ) : (
+                      <Pressable onPress={handleProfilePress}>
+                        <View
+                          style={[
+                            styles.profilePlaceholder,
+                            {
+                              backgroundColor: isDark ? "#555" : "#e0e0e0",
+                            },
+                          ]}
+                        >
+                          <Ionicons
+                            name="person"
+                            size={20}
+                            color={isDark ? "#ccc" : "#666666"}
                           />
-                        </Pressable>
-                      ) : (
-                        <Pressable onPress={handleProfilePress}>
-                          <View
-                            style={[
-                              styles.profilePlaceholder,
-                              { backgroundColor: isDark ? "#555" : "#e0e0e0" },
-                            ]}
-                          >
-                            <Ionicons
-                              name="person"
-                              size={20}
-                              color={isDark ? "#ccc" : "#666666"}
-                            />
-                          </View>
-                        </Pressable>
-                      )}
-                    </View>
-                  )}
+                        </View>
+                      </Pressable>
+                    )}
+                  </View>
                 </View>
               </Animated.View>
             </Animated.View>
